@@ -1,0 +1,109 @@
+/* styles.css */
+
+/* Container styles for light and dark modes */
+.chatbot-container.light-mode {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.chatbot-container.dark-mode {
+    background-color: #333;
+    color: #f5f5f5;
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 200px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+}
+
+.profile-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+/* Toggle button styles */
+.toggle-mode-btn,
+.settings-btn {
+    display: block;
+    margin: 15px 0;
+    padding: 10px;
+    width: 100%;
+    background-color: #34495e;
+    color: #ecf0f1;
+    border: none;
+    cursor: pointer;
+}
+
+.toggle-mode-btn:hover,
+.settings-btn:hover {
+    background-color: #1abc9c;
+}
+
+/* Chatbot main content styles */
+.chatbot-content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+.responses {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.response {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Form input styles */
+.chatbot-form {
+    display: flex;
+    margin-top: 10px;
+}
+
+.prompt-input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.submit-btn {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.submit-btn:disabled {
+    background-color: #aaa;
+}
+
+/* Additional styling */
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+.partition {
+    height: 1px;
+    background-color: #ccc;
+    margin: 15px 0;
+}
