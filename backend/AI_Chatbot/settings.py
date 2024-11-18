@@ -80,7 +80,7 @@ USE_TZ = True
 # Static files settings
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory where collectstatic will place files
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Additional directories to look for static files
+STATICFILES_DIRS = [BASE_DIR / 'backend/static']  # Additional directories to look for static files
 
 # Default auto field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

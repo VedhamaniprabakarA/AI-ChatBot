@@ -8,6 +8,7 @@ const Chatbot = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [selectedModel, setSelectedModel] = useState("gpt-2"); // Add a state for selected model
 
     // Fetch the CSRF token on mount
     useEffect(() => {
@@ -40,7 +41,7 @@ const Chatbot = () => {
                         "Content-Type": "application/json",
                         "X-CSRFToken": csrfToken,  // Include CSRF token here
                     },
-                    body: JSON.stringify({ question: prompt }),
+                    body: JSON.stringify({ question: prompt, model: selectedModel }), // Send selected model with the prompt
                 });
 
                 const data = await response.json();
@@ -64,13 +65,25 @@ const Chatbot = () => {
         setDarkMode(!darkMode);
     };
 
+    // Handle model selection
+    const handleModelChange = (e) => {
+        setSelectedModel(e.target.value);
+    };
+
     return (
         <div className={`chatbot-container ${darkMode ? 'dark-mode' : 'light-mode'}`}>
             <div className="sidebar">
                 <div className="profile-info">
-                    <img src="/path-to-profile-pic.jpg" alt="Profile" className="profile-pic" />
+                    <img src="/home/praba/Desktop/AI_ChatBot/frontend/my-app/public/profile.jpg" alt="Profile" className="profile-pic" />
                     <h3>NerdsHub</h3>
-                    <p>Contact: nerdshub.co.in</p>
+                    <p>.....................</p>
+                </div>
+                <div className="models-dropdown">
+                    <button className="models-btn">Models</button>
+                    <select value={selectedModel} onChange={handleModelChange} className="model-select">
+                        <option value="gpt-2">GPT-2</option>
+                        <option value="ollama">Ollama</option>
+                    </select>
                 </div>
                 <button className="settings-btn">Settings</button>
                 <button onClick={toggleMode} className="toggle-mode-btn">
@@ -86,7 +99,7 @@ const Chatbot = () => {
                     {responses.map((response, index) => (
                         <div key={index} className="response">
                             <p><strong>You:</strong> {response.question}</p>
-                            <p><strong>DobbyBot:</strong> {response.answer}</p>
+                            <p><strong>EVE:</strong> {response.answer}</p>
                         </div>
                     ))}
                     {loading && <p>Loading...</p>}

@@ -1,4 +1,12 @@
 /* Light and Dark mode styling */
+
+.chatbot-content {
+  font-size: 1rem;
+  color: #757C88 ;
+  position: center;
+}
+
+
 .light-mode {
   background: linear-gradient(135deg, #f4f4f4, #cfe8fc); /* Light mode background */
   color: #000;
@@ -14,12 +22,17 @@
   display: flex;
   min-height: 100vh; /* Full height */
   flex-direction: row;
+  position: relative; /* Set container as relative to position the chatbot at the bottom */
+  background-image: url('background3.gif'); /* Add background image */
+  background-size: cover; /* Ensure the image covers the entire container */
+  background-position: top; /* Center the background image */
+  background-attachment: fixed; /* Optional: Keep background fixed when scrolling */
 }
 
 /* Sidebar styling */
 .sidebar {
   width: 250px;
-  background-color: #333; /* Dark sidebar */
+  background-color: rgba(51, 51, 51, 0.8); /* Dark sidebar with opacity */
   color: white;
   display: flex;
   flex-direction: column;
@@ -71,33 +84,43 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end; /* Move content to the bottom */
   align-items: center;
   padding: 20px;
+  position: relative;
+  z-index: 1; /* Ensure content is above background */
 }
 
+/* Chatbot form styling */
 .chatbot-form {
   display: flex;
   flex-direction: row; /* Change to row to position input and button side by side */
   align-items: center; /* Center align the button and input vertically */
-  margin: 50px 0;
+  margin: 20px 0;
+  position: absolute;
+  bottom: 20px; /* Keep the form fixed to the bottom */
+  width: 100%;
+  justify-content: center;
+  z-index: 2; /* Ensure form is above the background */
 }
 
+/* Styling for the input box */
 .prompt-input {
   padding: 10px;
-  margin-bottom: 10px;
+  margin-right: 10px; /* Add space between input and submit button */
   border: 5px solid #ccc;
-  border-radius: 10px;
-  width: 20cm; /* Set the width to 15cm */
+  border-radius: 20px;
+  width: 1000px; /* Set a fixed width for the input */
+  min-width: 200px;
 }
 
 /* Style the submit button */
 .submit-btn {
-  padding: 15px 3px; /* Adjust padding for smaller button */
+  padding: 15px 5px; /* Adjust padding for smaller button */
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 50%; /* Make the button round */
+  border-radius: 100%; /* Make the button round */
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -110,6 +133,7 @@
 }
 
 .responses {
+  position : center;
   margin-top: 20px;
   width: 50%; /* Make responses section take full width */
 }
@@ -130,7 +154,6 @@
   background-color: #ccc; /* Light gray partition */
   margin: 20px 0; /* Space around the partition */
 }
-
 /* Login page styles */
 .login-container {
   display: flex;
@@ -150,11 +173,6 @@
   text-align: center;
 }
 
-h1 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 300px;
-}
 
 .error {
   color: red;
