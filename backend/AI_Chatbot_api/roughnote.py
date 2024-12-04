@@ -1,65 +1,118 @@
-import json
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering, Trainer, TrainingArguments, default_data_collator
-from torch.utils.data import Dataset
 
-# Load your JSON training data
-class QADataset(Dataset):
-    def __init__(self, data, tokenizer):
-        self.tokenizer = tokenizer
-        self.data = data
+#model
+import os
+import torch
+from PyPDF2 import PdfReader
+from transformers import (
+    AutoTokenizer,
+    AutoModelForCausalLM,
+    Trainer,
+    TrainingArguments,
+    DataCollatorForLanguageModeling,
+)
+from datasets import Dataset
+from peft import get_peft_model, LoraConfig, TaskType
+from transformers import BitsAndBytesConfig
 
-    def __len__(self):
-        return len(self.data)
+# Step 1: Convert PDF to text
+def extract_text_from_pdf(pdf_path):
+    reader = PdfReader(pdf_path)
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text()
+    return text
 
-    def __getitem__(self, idx):
-        item = self.data[idx]
-        inputs = self.tokenizer(
-            item["context"],
-            item["question"],
-            truncation=True,
-            padding="max_length",
-            max_length=512,
-            return_tensors="pt"
-        )
-        start_position = item["context"].find(item["answer"])
-        end_position = start_position + len(item["answer"])
-        inputs["start_positions"] = start_position
-        inputs["end_positions"] = end_position
-        return {key: val.squeeze() for key, val in inputs.items()}
+# Path to your PDF
+pdf_path = "/home/praba/Desktop/AI_ChatBot/backend/AI_Chatbot_api/dataset/budget_speech.pdf"
+text_data = extract_text_from_pdf(pdf_path)
 
-# Load data
-with open("qa_data.json") as f:
-    qa_data = json.load(f)
+# Save extracted text to a file (for debugging or reuse)
+with open("budget_speech.txt", "w") as f:
+    f.write(text_data)
 
-# Model and tokenizer setup
-model_name = "distilbert-base-uncased"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForQuestionAnswering.from_pretrained(model_name)
+# Step 2: Tokenize the dataset
+def create_dataset(text):
+    lines = text.split("\n")
+    return Dataset.from_dict({"text": lines})
 
-# Prepare dataset
-dataset = QADataset(qa_data, tokenizer)
+dataset = create_dataset(text_data)
 
-# Training arguments
-training_args = TrainingArguments(
-    output_dir="./fine_tuned_model",
-    evaluation_strategy="epoch",
-    learning_rate=2e-5,
-    per_device_train_batch_size=2,
-    num_train_epochs=3,
-    weight_decay=0.01,
+# Step 3: Load Meta's Llama 3.2-3B model and tokenizer
+model_name = "meta-llama/Llama-3.2-3B"
+tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
+model = AutoModelForCausalLM.from_pretrained(model_name)
+
+# Step 4: Apply LoRA for memory-efficient fine-tuning
+peft_config = LoraConfig(
+    task_type=TaskType.CAUSAL_LM,
+    r=16,
+    lora_alpha=32,
+    lora_dropout=0.1,
+    bias="none",
 )
 
-# Initialize Trainer
+model = get_peft_model(model, peft_config)
+
+# Enable gradient checkpointing for reduced memory usage
+model.gradient_checkpointing_enable()
+
+# Step 5: Tokenize and preprocess the dataset
+def tokenize_function(examples):
+    return tokenizer(examples["text"], truncation=True, padding="max_length", max_length=512)
+
+tokenized_dataset = dataset.map(tokenize_function, batched=True, remove_columns=["text"])
+
+# Step 6: Define data collator
+data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
+
+# Step 7: Training arguments
+training_args = TrainingArguments(
+    output_dir="./results",
+    evaluation_strategy="steps",
+    eval_steps=500,
+    save_steps=500,
+    logging_steps=100,
+    per_device_train_batch_size=1,  # Adjust to your GPU capacity
+    gradient_accumulation_steps=16,  # Simulates larger batch size
+    num_train_epochs=3,
+    learning_rate=5e-5,
+    fp16=True,  # Enable mixed precision
+    save_total_limit=2,
+    optim="adamw_torch",
+    report_to="none",
+)
+
+# Step 8: Train the model
 trainer = Trainer(
     model=model,
+    tokenizer=tokenizer,
     args=training_args,
-    train_dataset=dataset,
-    data_collator=default_data_collator,
+    train_dataset=tokenized_dataset,
+    eval_dataset=tokenized_dataset,
+    data_collator=data_collator,
 )
 
-# Fine-tune the model
 trainer.train()
 
-# Save model and tokenizer
-model.save_pretrained("fine_tuned_model")
-tokenizer.save_pretrained("fine_tuned_model")
+# Save the fine-tuned model
+model.save_pretrained("./trained_model")
+tokenizer.save_pretrained("./trained_model")
+
+# Step 9: Quantize the model
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_compute_dtype=torch.float16,
+)
+
+quantized_model = AutoModelForCausalLM.from_pretrained(
+    "./trained_model",
+    quantization_config=bnb_config,
+    device_map="auto",  # Automatically maps model to available devices
+)
+
+# Save the quantized model
+quantized_model.save_pretrained("./quantized_model")
+tokenizer.save_pretrained("./quantized_model")
+
+print("Training and quantization complete. Models saved in './trained_model' and './quantized_model'")
+

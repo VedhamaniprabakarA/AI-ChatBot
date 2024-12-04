@@ -28,7 +28,7 @@ def ask_question(question):
         return "Question is too long. Please ask a shorter question."
     try:
         response = ollama.chat(
-            model='llama3.2',
+            model='meta-llama/Llama-3.2-3B',
             messages=[{'role': 'user', 'content': question}]
         )
         # Extract response content from Ollama's response format
