@@ -44,7 +44,7 @@ from rest_framework.response import Response
 import ollama
 
 # Define a maximum length for the question (you can adjust this as needed)
-MAX_LEN = 500  # Maximum length for the question
+MAX_LEN = 100000  # Maximum length for the question
 
 @api_view(["POST"])
 def chat_bot_response(request):
@@ -59,7 +59,7 @@ def chat_bot_response(request):
     try:
         # Generate response from the ollama model
         response = ollama.chat(
-            model='llama3.2',
+            model='llama3.2:3b',
             messages=[{'role': 'user', 'content': question}]
         )
         response_text = response.get('message', {}).get('content', 'No response from model.')

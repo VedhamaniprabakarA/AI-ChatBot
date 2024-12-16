@@ -1,32 +1,26 @@
-/* Light and Dark mode styling */
 .light-mode {
-  background: linear-gradient(135deg, #f4f4f4, #cfe8fc); /* Light mode background */
+  background: linear-gradient(135deg, #f4f4f4, #cfe8fc);
   color: #000;
 }
 
 .dark-mode {
-  background: linear-gradient(135deg, white, black); /* Dark mode background */
+  background: linear-gradient(135deg, #000000, #1c1c1c);
   color: #fff;
 }
 
-/* Container for chatbot and sidebar */
+/* Chatbot Container */
 .chatbot-container {
-  display: flex;
-  min-height: 100vh; /* Full height */
-  flex-direction: row;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  width: 400px;
+  margin: 0 auto;
 }
 
-.chatbot-container.dark-mode {
-  color: #f5f5f5;
-  background-image: url('background3.gif'); /* Adjust path to public folder */
-  background-size: cover;
-  background-position: center;
-}
-
-/* Sidebar styling */
 .sidebar {
   width: 250px;
-  background-color: #333; /* Dark sidebar */
+  background-color: #333;
   color: white;
   display: flex;
   flex-direction: column;
@@ -35,45 +29,23 @@
 }
 
 .profile-info {
-  text-align: center;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .profile-pic {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin-bottom: 10px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
 }
 
-.settings-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: auto;
-}
-
-.settings-btn:hover {
-  background-color: #0056b3;
-}
-
-.toggle-mode-btn {
-  background-color: #00adb5;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
+.models-dropdown select {
+  width: 100%;
+  padding: 5px;
   margin-top: 10px;
 }
 
-.toggle-mode-btn:hover {
-  background-color: #007b80;
-}
-
-/* Chatbot content area styling */
 .chatbot-content {
   flex-grow: 1;
   display: flex;
@@ -83,128 +55,42 @@
   padding: 20px;
 }
 
+.responses {
+  margin-top: 20px;
+  width: 50%;
+}
+
+.response {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
 .chatbot-form {
   display: flex;
-  flex-direction: row; /* Change to row to position input and button side by side */
-  align-items: center; /* Center align the button and input vertically */
-  margin: 50px 0;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .prompt-input {
   padding: 10px;
-  margin-bottom: 10px;
-  border: 5px solid #ccc;
-  border-radius: 10px;
-  width: 20cm; /* Set the width to 15cm */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  flex-grow: 1;
 }
 
-/* Style the submit button */
 .submit-btn {
-  padding: 15px 3px; /* Adjust padding for smaller button */
+  padding: 10px 20px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 50%; /* Make the button round */
+  border-radius: 5px;
+  margin-left: 10px;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .submit-btn:hover {
   background-color: #0056b3;
-  transition: 0.3s ease;
-}
-
-.responses {
-  margin-top: 20px;
-  width: 50%; /* Make responses section take full width */
-}
-
-.response {
-  background-color: white; /* Dark background for responses */
-  color: black;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 5px 0;
-  max-width: 100%;
-}
-
-/* Static partition divider */
-.partition {
-  width: 100%;
-  height: 2px;
-  background-color: #ccc; /* Light gray partition */
-  margin: 20px 0; /* Space around the partition */
-}
-
-/* Login page styles */
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #ffffff, #cfe8fc); /* Light background for login */
-}
-
-.login-box {
-  background-color: white;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-h1 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 300px;
-}
-
-.error {
-  color: red;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 1rem;
-}
-
-.form-group input {
-  padding: 10px;
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.login-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-top: 20px;
-  width: 100%;
-}
-
-.login-btn:hover {
-  background-color: #0056b3;
-}
-
-/* Responsive layout for smaller screens */
-@media (max-width: 768px) {
-  .login-box {
-    padding: 20px;
-    width: 90%;
-  }
 }

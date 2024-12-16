@@ -8,9 +8,8 @@ const Chatbot = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [selectedModel, setSelectedModel] = useState("gpt-2"); // Add a state for selected model
+    const [selectedModel, setSelectedModel] = useState("gpt-2");
 
-    // Fetch the CSRF token on mount
     useEffect(() => {
         const fetchCsrfToken = async () => {
             try {
@@ -28,7 +27,6 @@ const Chatbot = () => {
         fetchCsrfToken();
     }, []);
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (prompt.trim()) {
@@ -39,15 +37,15 @@ const Chatbot = () => {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "X-CSRFToken": csrfToken,  // Include CSRF token here
+                        "X-CSRFToken": csrfToken,
                     },
-                    body: JSON.stringify({ question: prompt, model: selectedModel }), // Send selected model with the prompt
+                    body: JSON.stringify({ question: prompt, model: selectedModel }),
                 });
 
                 const data = await response.json();
                 if (response.ok) {
                     setResponses([...responses, { question: prompt, answer: data.response }]);
-                    setPrompt(""); // Clear input after submission
+                    setPrompt("");
                 } else {
                     setError(data.error || "An error occurred. Please try again.");
                 }
@@ -60,12 +58,10 @@ const Chatbot = () => {
         }
     };
 
-    // Toggle dark/light mode
     const toggleMode = () => {
         setDarkMode(!darkMode);
     };
 
-    // Handle model selection
     const handleModelChange = (e) => {
         setSelectedModel(e.target.value);
     };
@@ -74,15 +70,15 @@ const Chatbot = () => {
         <div className={`chatbot-container ${darkMode ? 'dark-mode' : 'light-mode'}`}>
             <div className="sidebar">
                 <div className="profile-info">
-                    <img src="/home/praba/Desktop/AI_ChatBot/frontend/my-app/public/profile.jpg" alt="Profile" className="profile-pic" />
+                    <img src="profile.jpg" alt="Profile" className="profile-pic" />
                     <h3>NerdsHub</h3>
-                    <p>.....................</p>
+                    <p>AI Chatbot</p>
                 </div>
                 <div className="models-dropdown">
                     <button className="models-btn">Models</button>
                     <select value={selectedModel} onChange={handleModelChange} className="model-select">
                         <option value="gpt-2">GPT-2</option>
-                        <option value="ollama">Ollama</option>
+                        <option value="llama3.2:3b">Ollama</option>
                     </select>
                 </div>
                 <button className="settings-btn">Settings</button>
@@ -92,7 +88,7 @@ const Chatbot = () => {
             </div>
 
             <div className="chatbot-content">
-                <h1>Welcome to AI_ChatBot</h1>
+                <h1>Welcome to AI Chatbot</h1>
                 <p>Your personalized chatbot awaits!</p>
 
                 <div className="responses">

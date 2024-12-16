@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from './components/Login';  // Ensure the file path is correct and case matches
-import Chatbot from './components/Chatbot';  // Ensure the file path is correct and case matches
+import Login from './components/Login';
+import Chatbot from './components/Chatbot';
 
 const App = () => {
   return (
@@ -14,6 +14,6 @@ const App = () => {
       </div>
     </Router>
   );
-}
+};
 
 export default App;
