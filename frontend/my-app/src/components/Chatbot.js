@@ -66,7 +66,8 @@ const Chatbot = () => {
         setSelectedModel(e.target.value);
     };
 
-    */chatbot text/*
+    /*ChatBot text test*/
+
     return (
         <div className={`chatbot-container ${darkMode ? 'dark-mode' : 'light-mode'}`}>
             <div className="sidebar">
