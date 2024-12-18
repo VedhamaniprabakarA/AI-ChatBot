@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import '../styles.css';
-
+/*........................*/
 const Chatbot = () => {
     const [csrfToken, setCsrfToken] = useState("");
     const [prompt, setPrompt] = useState("");
