@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import '../styles.css';
-/*......................................*/
+/*..................test....................*/
 const Chatbot = () => {
     const [csrfToken, setCsrfToken] = useState("");
     const [prompt, setPrompt] = useState("");
@@ -10,7 +10,7 @@ const Chatbot = () => {
     const [error, setError] = useState(null);
     const [selectedModel, setSelectedModel] = useState("gpt-2");
 
-    useEffect(() => {
+    useEffect(() => {                   
         const fetchCsrfToken = async () => {
             try {
                 const response = await fetch("http://localhost:8000/api/csrf/");
